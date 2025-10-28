@@ -1,0 +1,122 @@
+WIERA/
+│
+├── README.md
+├── package.json
+├── .gitignore
+│
+├── frontend/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   │
+│   └── src/
+│       ├── App.jsx
+│       ├── main.jsx
+│       │
+│       ├── api/
+│       │   ├── axiosClient.js
+│       │   ├── lessonApi.js
+│       │   ├── dictionaryApi.js
+│       │   ├── progressApi.js
+│       │   ├── modelApi.js
+│       │   └── scoreApi.js
+│       │
+│       ├── components/
+│       │   ├── Navbar.jsx
+│       │   ├── Footer.jsx
+│       │   ├── LessonCard.jsx
+│       │   ├── LessonViewer.jsx
+│       │   ├── ProgressChart.jsx
+│       │   ├── Sign3DViewer.jsx
+│       │   ├── MiniGame.jsx
+│       │   └── LoadingSpinner.jsx
+│       │
+│       ├── pages/
+│       │   ├── Home.jsx
+│       │   ├── Learn.jsx
+│       │   ├── Dictionary.jsx
+│       │   ├── Progress.jsx
+│       │   ├── Game.jsx
+│       │   └── Viewer3D.jsx
+│       │
+│       ├── store/
+│       │   ├── useLessonStore.js
+│       │   ├── useProgressStore.js
+│       │   └── useGameStore.js
+│       │
+│       ├── assets/
+│       │   ├── images/
+│       │   │   ├── logo.png
+│       │   │   ├── background.jpg
+│       │   │   └── signs/
+│       │   │       └── hello.png
+│       │   ├── videos/
+│       │   │   └── lessons/
+│       │   │       └── intro.mp4
+│       │   ├── models/
+│       │   │   ├── hello.glb
+│       │   │   ├── thankyou.glb
+│       │   │   └── love.glb
+│       │   └── sounds/
+│       │       └── click.mp3
+│       │
+│       └── styles/
+│           └── globals.css
+│
+├── backend/
+│   ├── package.json
+│   ├── .env
+│   ├── server.js
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── models/
+│   │   │   ├── Lesson.js
+│   │   │   ├── Dictionary.js
+│   │   │   ├── Progress.js
+│   │   │   ├── Model3D.js
+│   │   │   └── Score.js
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── lessonController.js
+│   │   │   ├── dictionaryController.js
+│   │   │   ├── progressController.js
+│   │   │   ├── modelController.js
+│   │   │   └── scoreController.js
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── lessonRoutes.js
+│   │   │   ├── dictionaryRoutes.js
+│   │   │   ├── progressRoutes.js
+│   │   │   ├── modelRoutes.js
+│   │   │   └── scoreRoutes.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── errorHandler.js
+│   │   │
+│   │   └── utils/
+│   │       ├── encodeFile.js
+│   │       ├── uploadHandler.js
+│   │       └── seedData.js
+│   │
+│   └── uploads/
+│       ├── models/
+│       ├── videos/
+│       └── images/
+│
+├── database/
+│   ├── seed/
+│   │   ├── lessons.json
+│   │   ├── dictionary.json
+│   │   └── progress.json
+│   └── scripts/
+│       └── seedToMongo.js
+│
+└── docs/
+    ├── API_spec.md
+    ├── DB_schema.png
+    └── Dev_notes.txt

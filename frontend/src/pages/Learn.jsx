@@ -1,69 +1,73 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import useLessonStore from "../store/useLessonStore";
+import LessonCard from "../components/LessonCard";
+import LessonViewer from "../components/LessonViewer";
 
-function Lessons() {
-  const [images, setImages] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [activeGroup, setActiveGroup] = useState("alphabet");
+const categories = [
+  { key: "alphabet", label: "Chữ cái" },
+  { key: "numbers", label: "Số đếm" },
+  { key: "greetings", label: "Chào hỏi" },
+  { key: "people", label: "Con người" },
+  { key: "emotions", label: "Cảm xúc" },
+  { key: "colors", label: "Màu sắc" },
+  { key: "places", label: "Địa điểm" },
+  { key: "others", label: "Khác" },
+];
+
+export default function Learn() {
+  const [active, setActive] = useState("alphabet");
+  const [selected, setSelected] = useState(null);
+  const { lessons, fetchLessons, loading } = useLessonStore();
 
   useEffect(() => {
-    async function fetchImages() {
-      try {
-        const res = await axios.get("http://127.0.0.1:5001/api/images");
-        setImages(res.data); // dữ liệu từ Flask
-      } catch (err) {
-        console.error("Lỗi tải ảnh:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchImages();
-  }, []);
-
-  if (loading) return <p className="text-center mt-10">⏳ Đang tải dữ liệu...</p>;
+    fetchLessons(active);
+  }, [active]);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4 text-center">Bài học cơ bản</h1>
-      <div className="flex gap-2 justify-center mb-6">
-        <button
-          onClick={() => setActiveGroup("alphabet")}
-          className={`px-4 py-2 rounded ${
-            activeGroup === "alphabet" ? "bg-blue-600" : "bg-gray-700"
-          }`}
-        >
-          Chữ cái
-        </button>
-        <button
-          onClick={() => setActiveGroup("numbers")}
-          className={`px-4 py-2 rounded ${
-            activeGroup === "numbers" ? "bg-blue-600" : "bg-gray-700"
-          }`}
-        >
-          Số đếm
-        </button>
+    <section className="p-8">
+      <h2 className="text-2xl font-bold mb-2">Bài học cơ bản</h2>
+      <p className="text-gray-600 mb-4">
+        Học từng bước các kỹ năng ngôn ngữ ký hiệu cơ bản
+      </p>
+
+      <div className="flex gap-2 flex-wrap mb-6">
+        {categories.map((c) => (
+          <button
+            key={c.key}
+            onClick={() => setActive(c.key)}
+            className={`px-4 py-2 rounded-lg ${
+              active === c.key
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
       </div>
 
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
-        {images?.data
-          ? Object.entries(images.data).map(([key, value]) => (
-              <div
-                key={key}
-                className="bg-gray-800 p-4 rounded-lg text-center shadow-md hover:scale-105 transition-transform"
-              >
-                <img
-                  src={`data:image/png;base64,${value}`}
-                  alt={key}
-                  className="mx-auto mb-2 rounded-lg"
-                />
-                <p className="capitalize text-sm">{key.replace(".png", "")}</p>
-              </div>
-            ))
-          : "Không có dữ liệu ảnh."}
-      </div>
-    </div>
+      {loading ? (
+        <p>Đang tải...</p>
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {lessons.map((l, i) => (
+            <LessonCard
+              key={i}
+              image={l.url}
+              label={l.label}
+              onClick={() => setSelected(l)}
+            />
+          ))}
+        </div>
+      )}
+
+      <LessonViewer
+        isOpen={!!selected}
+        onClose={() => setSelected(null)}
+        image={selected?.url}
+        label={selected?.label}
+      />
+    </section>
   );
 }
-
-export default Lessons;
 

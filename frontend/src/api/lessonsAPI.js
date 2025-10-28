@@ -1,10 +1,10 @@
 import axiosClient from "./axiosClient";
 
-const lessonsAPI = {
-  getAll: () => axiosClient.get("/lessons"),
-  getById: (id) => axiosClient.get(`/lessons/${id}`),
-  updateProgress: (lessonId, progress) =>
-    axiosClient.post(`/progress/${lessonId}`, { progress }),
+const lessonApi = {
+  async getByGroup(group) {
+    const res = await axiosClient.get(`/images/${group}`);
+    return res.data; // { data: { 'a.png': 'base64...' } }
+  },
 };
 
-export default lessonsAPI;
+export default lessonApi;
