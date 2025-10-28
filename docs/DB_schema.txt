@@ -1,0 +1,125 @@
+WIERA/
+│
+├── README.md                                  # Giới thiệu dự án, cách cài đặt và chạy demo
+├── package.json                               # Khai báo thư viện dùng chung (nếu monorepo)
+├── .gitignore                                 # Bỏ qua các file tạm khi đẩy Git
+│
+│
+├── frontend/                                  # 💎 Toàn bộ phần giao diện (Dev A)
+│   ├── index.html                             # File gốc, React mount vào đây
+│   ├── package.json                           # Khai báo thư viện frontend (React, Vite, Tailwind, ...)
+│   ├── vite.config.js                         # Cấu hình bundler Vite (chạy server frontend)
+│   ├── tailwind.config.js                     # Cấu hình màu sắc, font, spacing của Tailwind
+│   ├── postcss.config.js                      # Cấu hình xử lý CSS tự động
+│   │
+│   └── src/
+│       ├── App.jsx                            # Root React component, quản lý routing các trang
+│       ├── main.jsx                           # Điểm khởi tạo ReactDOM, import App.jsx
+│       │
+│       ├── api/                               # 🌐 Module gọi API backend bằng Axios
+│       │   ├── axiosClient.js                 # Tạo axios instance, config baseURL (/api)
+│       │   ├── lessonApi.js                   # Gửi/nhận dữ liệu bài học (GET/POST)
+│       │   ├── dictionaryApi.js               # Gửi/nhận dữ liệu từ điển (GET)
+│       │   ├── progressApi.js                 # Lưu và tải tiến trình học (POST/GET)
+│       │   ├── modelApi.js                    # Lấy mô hình 3D từ MongoDB (GET)
+│       │   └── scoreApi.js                    # Lưu/đọc điểm số minigame (POST/GET)
+│       │
+│       ├── components/                        # 🧩 Các thành phần tái sử dụng trên nhiều trang
+│       │   ├── Navbar.jsx                     # Thanh menu chính (link Home, Learn, Game,...)
+│       │   ├── Footer.jsx                     # Chân trang, liên hệ, bản quyền
+│       │   ├── LessonCard.jsx                 # Component hiển thị 1 bài học (ảnh + tên + link)
+│       │   ├── LessonViewer.jsx               # Component hiển thị nội dung bài học, render video hoặc ảnh động
+│       │   ├── ProgressChart.jsx              # Biểu đồ tiến trình học (dùng Recharts)
+│       │   ├── Sign3DViewer.jsx               # Hiển thị mô hình 3D ký hiệu (Three.js)
+│       │   ├── MiniGame.jsx                   # Trò chơi học ký hiệu (Canvas/Phaser.js)
+│       │   └── LoadingSpinner.jsx             # Vòng xoay tải dữ liệu từ API
+│       │
+│       ├── pages/                             # 📄 Các trang chính của website
+│       │   ├── Home.jsx                       # Trang chủ (giới thiệu, nút bắt đầu học)
+│       │   ├── Learn.jsx                      # Trang học lộ trình (render từ API lesson)
+│       │   ├── Dictionary.jsx                 # Từ điển ký hiệu (render dữ liệu từ dictionaryApi)
+│       │   ├── Progress.jsx                   # Trang tiến trình (hiển thị điểm và tiến độ từ progressApi)
+│       │   ├── Game.jsx                       # Trang minigame, kết nối scoreApi
+│       │   └── Viewer3D.jsx                   # Trang riêng hiển thị mô hình tay 3D (Sign3DViewer)
+│       │
+│       ├── store/                             # 🧠 Quản lý trạng thái toàn cục (Zustand)
+│       │   ├── useLessonStore.js              # Lưu danh sách bài học, bài hiện tại
+│       │   ├── useProgressStore.js            # Lưu tiến trình và cập nhật điểm
+│       │   └── useGameStore.js                # Lưu trạng thái trò chơi hiện tại
+│       │
+│       ├── assets/                            # 🖼️ Tài nguyên tĩnh frontend
+│       │   ├── images/                        # Hình ảnh tĩnh
+│       │   │   ├── logo.png                   # Logo WIERA
+│       │   │   ├── background.jpg             # Ảnh nền trang chủ
+│       │   │   └── signs/                     # Ảnh minh họa ký hiệu (demo)
+│       │   │       └── hello.png
+│       │   ├── videos/
+│       │   │   └── lessons/                   # Video hướng dẫn học ký hiệu (nếu có)
+│       │   │       └── intro.mp4
+│       │   ├── models/                        # 🦾 Mô hình 3D (GLB, FBX, OBJ, v.v.)
+│       │   │   ├── hello.glb
+│       │   │   ├── thankyou.glb
+│       │   │   └── love.glb
+│       │   └── sounds/                        # Âm thanh click, chúc mừng, v.v.
+│       │       └── click.mp3
+│       │
+│       └── styles/
+│           └── globals.css                    # Toàn bộ định dạng chung: font, màu, layout
+│
+│
+├── backend/                                   # ⚙️ API và xử lý dữ liệu (Dev B)
+│   ├── package.json                           # Khai báo thư viện backend
+│   ├── .env                                   # Cấu hình môi trường (Mongo URI, PORT,...)
+│   ├── server.js                              # File chính chạy Express server
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js                          # Kết nối MongoDB (mongoose.connect)
+│   │   │
+│   │   ├── models/                            # 🧾 Định nghĩa cấu trúc dữ liệu MongoDB
+│   │   │   ├── Lesson.js                      # Lưu bài học (tên, mô tả, video, ảnh)
+│   │   │   ├── Dictionary.js                  # Lưu từ điển ký hiệu (ký tự, mô tả, ảnh/gif)
+│   │   │   ├── Progress.js                    # Lưu tiến trình học của người dùng demo
+│   │   │   ├── Model3D.js                     # Lưu file mô hình 3D (tên, file base64, URL)
+│   │   │   └── Score.js                       # Lưu điểm số trò chơi
+│   │   │
+│   │   ├── controllers/                       # 💡 Xử lý logic khi API được gọi
+│   │   │   ├── lessonController.js            # Lấy / thêm bài học → MongoDB
+│   │   │   ├── dictionaryController.js          # Lấy từ điển ký hiệu
+│   │   │   ├── progressController.js          # Lưu tiến trình (POST), tải tiến trình (GET)
+│   │   │   ├── modelController.js             # Encode file 3D → MongoDB, trả model 3D ra frontend
+│   │   │   └── scoreController.js             # Lưu và đọc điểm minigame
+│   │   │
+│   │   ├── routes/                            # 🚏 Định nghĩa endpoint API
+│   │   │   ├── lessonRoutes.js                # /api/lessons → lessonController
+│   │   │   ├── dictionaryRoutes.js            # /api/dictionary → dictionaryController
+│   │   │   ├── progressRoutes.js              # /api/progress → progressController
+│   │   │   ├── modelRoutes.js                 # /api/models → modelController
+│   │   │   └── scoreRoutes.js                 # /api/scores → scoreController
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── errorHandler.js                # Xử lý lỗi toàn cục cho API
+│   │   │
+│   │   └── utils/                             # 🧰 Tiện ích backend
+│   │       ├── encodeFile.js                  # 📦 Encode file (base64) trước khi lưu MongoDB
+│   │       ├── uploadHandler.js               # Nhận file upload từ client và ghi tạm vào uploads/
+│   │       └── seedData.js                    # Ghi dữ liệu mẫu (lessons, dictionary)
+│   │
+│   └── uploads/                               # 📁 File tạm thời trước khi encode
+│       ├── models/                            # Chứa file .glb, .fbx chờ upload
+│       ├── videos/
+│       └── images/
+│
+│
+├── database/
+│   ├── seed/
+│   │   ├── lessons.json                       # Dữ liệu mẫu các bài học
+│   │   ├── dictionary.json                    # Dữ liệu mẫu cho từ điển ký hiệu
+│   │   └── progress.json                      # Tiến trình mẫu cho user demo
+│   └── scripts/
+│       └── seedToMongo.js                     # Script import dữ liệu mẫu vào MongoDB
+│
+└── docs/
+    ├── API_spec.md                            # Danh sách endpoint, tham số, ví dụ JSON
+    ├── DB_schema.png                          # Sơ đồ cấu trúc bảng MongoDB
+    └── Dev_notes.txt                          # Ghi chú quá trình dev, test, lỗi đã sửa

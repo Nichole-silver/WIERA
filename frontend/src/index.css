@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+  @apply bg-gray-900 text-white antialiased;
+  font-family: 'Poppins', sans-serif;
+}
