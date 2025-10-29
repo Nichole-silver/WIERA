@@ -6,15 +6,21 @@ app = Flask(__name__)
 CORS(app)
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["signs_img"]
-collection = db["wiera"]
+db = client["Wiera"]
+collection = db["images"]
 
 @app.route("/api/images/<group>", methods=["GET"])
 def get_images_by_group(group):
-    data = collection.find_one({"group": group}, {"_id": 0})
-    if not data:
+    doc = collection.find_one({"group": group}, {"_id": 0})
+    if not doc:
         return jsonify({"error": "Group not found"}), 404
-    return jsonify(data)
+    
+    # Trả riêng phần dữ liệu ảnh (để frontend dễ hiểu)
+    return jsonify(doc.get("data", {}))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
+
+print("📡 Kết nối tới MongoDB...")
+print("Database hiện tại:", db.name)
+print("Các collection:", db.list_collection_names())

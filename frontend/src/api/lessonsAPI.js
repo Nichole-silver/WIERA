@@ -1,9 +1,9 @@
 import axiosClient from "./axiosClient";
 
 const lessonApi = {
-  async getByGroup(group) {
+  getByGroup: async (group) => {
     const res = await axiosClient.get(`/images/${group}`);
-    return res.data; // { data: { 'a.png': 'base64...' } }
+    return res.data; // Flask trả JSON đơn giản, không cần .data.data
   },
 };
 

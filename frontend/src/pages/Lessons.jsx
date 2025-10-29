@@ -11,7 +11,7 @@ function Lessons() {
       setLoading(true);
       try {
         const res = await axios.get(`http://127.0.0.1:5001/api/images/${group}`);
-        setImages(res.data.data || {});
+        setImages(res.data || {});
       } catch (err) {
         console.error("❌ Lỗi tải ảnh:", err);
       } finally {
@@ -26,7 +26,7 @@ function Lessons() {
       <h1 className="text-3xl font-bold mb-4">📘 Bài học - {group}</h1>
 
       <div className="flex justify-center flex-wrap gap-2 mb-8">
-        {["alphabet", "numbers", "greetings"].map((g) => (
+        {["alphabet", "number", "greeting"].map((g) => (
           <button
             key={g}
             onClick={() => setGroup(g)}

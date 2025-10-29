@@ -8,13 +8,16 @@ const useLessonStore = create((set) => ({
 
   fetchLessons: async (group) => {
     try {
-      set({ loading: true, error: null });
-      const res = await lessonApi.getByGroup(group);
-      const images = Object.entries(res.data || {}).map(([name, base64]) => ({
-        label: name.replace(".png", "").toUpperCase(),
+      set({ loading: true, error: null, lessons: [] });
+      const images = await lessonApi.getByGroup(group);
+
+      const parsed = Object.entries(images).map(([name, base64]) => ({
+        label: name.replace(/\.[^/.]+$/, "").toUpperCase(),
         url: `data:image/png;base64,${base64}`,
+        category: group,
       }));
-      set({ lessons: images });
+
+      set({ lessons: parsed });
     } catch (err) {
       set({ error: err.message });
     } finally {

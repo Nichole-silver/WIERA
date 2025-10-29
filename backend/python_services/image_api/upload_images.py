@@ -8,7 +8,8 @@ db = client["signs_img"]
 collection = db["wiera"]
 
 # 🧭 Thư mục chứa ảnh trong frontend
-ASSETS_DIR = os.path.join("..", "frontend", "src", "assets", "images")
+ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "frontend", "src", "assets", "images"))
+
 
 # Duyệt qua tất cả thư mục con (mỗi thư mục là 1 nhóm)
 for group in os.listdir(ASSETS_DIR):

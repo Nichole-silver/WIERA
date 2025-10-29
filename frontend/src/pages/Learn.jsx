@@ -5,19 +5,16 @@ import LessonViewer from "../components/LessonViewer";
 
 const categories = [
   { key: "alphabet", label: "Chữ cái" },
-  { key: "numbers", label: "Số đếm" },
-  { key: "greetings", label: "Chào hỏi" },
-  { key: "people", label: "Con người" },
-  { key: "emotions", label: "Cảm xúc" },
-  { key: "colors", label: "Màu sắc" },
-  { key: "places", label: "Địa điểm" },
-  { key: "others", label: "Khác" },
+  { key: "numbers", label: "Số đếm" },    // ✅ đổi lại
+  { key: "greeting", label: "Chào hỏi" }, // ✅ khớp DB
+  { key: "feelings", label: "Cảm xúc" },
+  { key: "colours", label: "Màu sắc" },
 ];
 
 export default function Learn() {
   const [active, setActive] = useState("alphabet");
   const [selected, setSelected] = useState(null);
-  const { lessons, fetchLessons, loading } = useLessonStore();
+  const { lessons, fetchLessons, loading, error } = useLessonStore();
 
   useEffect(() => {
     fetchLessons(active);
@@ -30,15 +27,16 @@ export default function Learn() {
         Học từng bước các kỹ năng ngôn ngữ ký hiệu cơ bản
       </p>
 
+      {/* Tabs */}
       <div className="flex gap-2 flex-wrap mb-6">
         {categories.map((c) => (
           <button
             key={c.key}
             onClick={() => setActive(c.key)}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-4 py-2 rounded-lg transition ${
               active === c.key
                 ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             {c.label}
@@ -46,13 +44,18 @@ export default function Learn() {
         ))}
       </div>
 
+      {/* Nội dung */}
       {loading ? (
-        <p>Đang tải...</p>
+        <p>Đang tải dữ liệu...</p>
+      ) : error ? (
+        <p className="text-red-500">Lỗi: {error}</p>
+      ) : lessons.length === 0 ? (
+        <p>Chưa có dữ liệu cho nhóm này.</p>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {lessons.map((l, i) => (
             <LessonCard
-              key={i}
+              key={`${l.category}-${i}`}
               image={l.url}
               label={l.label}
               onClick={() => setSelected(l)}
@@ -70,4 +73,3 @@ export default function Learn() {
     </section>
   );
 }
-
